@@ -37,26 +37,35 @@ O projeto segue um modelo de **MVC Estendido** com separação clara de responsa
 1. **Instalar dependências:**
    ```bash
    npm install
-   ```
 
-2. **Subir infraestrutura (DB & Redis):**
+2. Defina as variáveis de ambiente (Exemplo):
+    ```bash
+    DB_USERNAME=postgres
+    DB_DATABASE=scala_uvv
+    DB_PASSWORD=postgres
+    DB_PORT=5432
+    DB_HOST=localhost
+    NODE_ENV=development
+    ```
+
+3. **Subir infraestrutura (DB & Redis):**
    ```bash
    docker-compose up -d
    ```
 
-3. **Rodar em modo desenvolvimento:**
+4. **Rodar em modo desenvolvimento:**
    ```bash
    npm run start:dev
    ```
 
-4. **Verificar qualidade do código:**
+5. **Verificar qualidade do código:**
    ```bash
    npm run lint
    ```
 
 ## 📅 Próximos Passos
 
-- [ ] Implementação das Entidades de Domínio (Turma, Espaço, Alocação).
+- [x] Implementação das Entidades de Domínio (Turma, Espaço, Alocação).
 - [ ] Desenvolvimento do motor de detecção de conflitos de horários.
 - [ ] Criação de Seeds para carga inicial de dados acadêmicos.
 - [ ] Fluxo de solicitações de espaços especiais para professores.

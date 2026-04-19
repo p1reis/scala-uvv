@@ -2,6 +2,10 @@ import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import {
+ Usuario, Predio, Espaco, Turma, Agenda, Horario, Solicitacao, Log
+} from './domain/entity/index'
+
 
 @Module({
   imports: [
@@ -17,7 +21,9 @@ import { TypeOrmModule } from "@nestjs/typeorm";
         username: config.get<string>("DB_USERNAME"),
         password: config.get<string>("DB_PASSWORD"),
         database: config.get<string>("DB_DATABASE"),
-        autoLoadEntities: true,
+        // autoLoadEntities: true,
+        entities: [Usuario, Predio, Espaco, Turma, Agenda, Horario, Solicitacao, Log],
+
         synchronize: config.get<string>("NODE_ENV") === "development",
       }),
     }),

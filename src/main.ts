@@ -1,6 +1,6 @@
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
-import { patchNestjsSwagger } from "nestjs-zod";
+// import { patchNestJsSwagger } from "nestjs-zod";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
