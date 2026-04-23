@@ -6,6 +6,9 @@ import {
  Usuario, Predio, Espaco, Turma, Agenda, Horario, Solicitacao, Log
 } from './domain/entity/index'
 
+import { AuthModule } from './infrastructure/auth/auth.module';
+import { SeederService } from './infrastructure/database/seeder.service';
+
 
 @Module({
   imports: [
@@ -23,7 +26,6 @@ import {
         database: config.get<string>("DB_DATABASE"),
         // autoLoadEntities: true,
         entities: [Usuario, Predio, Espaco, Turma, Agenda, Horario, Solicitacao, Log],
-
         synchronize: config.get<string>("NODE_ENV") === "development",
       }),
     }),
@@ -36,6 +38,9 @@ import {
         },
       }),
     }),
+    AuthModule,
+    TypeOrmModule.forFeature([Usuario]),
   ],
+  providers: [SeederService],
 })
 export class AppModule {}
