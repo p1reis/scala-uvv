@@ -1,71 +1,101 @@
-# Scala UVV - Gerenciamento de Escalas e Espaços
+# Scala UVV
 
-Serviço centralizado para automatizar a organização semestral de salas e laboratórios da UVV, substituindo processos manuais via planilhas e eliminando conflitos de alocação.
+Plataforma para gestao e reserva de salas da Universidade Vila Velha. O projeto esta organizado em duas aplicacoes:
 
-## 🚀 Problema e Solução
+- `backend`: API em NestJS responsavel pelas regras de negocio, persistencia e integracoes de infraestrutura.
+- `scala-ui`: interface web em Next.js para login, dashboard e futuras telas da plataforma.
 
-Atualmente, a organização de espaços físicos é feita manualmente, o que consome semanas de trabalho e gera erros de alocação. O **Scala UVV** oferece uma plataforma centralizada para que organizadores gerenciem a grade semestral com agilidade e professores consultem e solicitem espaços especiais com visibilidade total.
+## Estrutura
 
-## 🛠 Stack Tecnológica
+```txt
+.
+├── backend/   # API NestJS
+└── scala-ui/  # Frontend Next.js
+```
 
-- **Runtime:** Node.js (v20+)
-- **Framework:** [NestJS](https://nestjs.com/)
-- **Linguagem:** TypeScript
-- **Banco de Dados:** PostgreSQL (Persistência) & Redis (Filas/Cache)
-- **ORM:** TypeORM
-- **Validação:** Zod & nestjs-zod
-- **Filas/Jobs:** BullMQ
-- **Qualidade de Código:** Biome (Linting & Formatting)
-- **Testes:** Jest
+## Tecnologias
 
-## 🏗 Arquitetura
+- Node.js
+- TypeScript
+- NestJS
+- Next.js
+- React
+- Tailwind CSS
+- PostgreSQL
+- Redis
+- TypeORM
+- BullMQ
 
-O projeto segue um modelo de **MVC Estendido** com separação clara de responsabilidades em camadas:
+## Pre-requisitos
 
-- **`src/domain`**: Entidades centrais e regras de negócio puras (ex: detecção de conflitos).
-- **`src/application`**: Casos de uso do sistema e processamento de jobs assíncronos.
-- **`src/infrastructure`**: Implementações técnicas (Controllers, Repositories, Migrations, Configurações de Framework).
+- Node.js 20+
+- pnpm
+- Docker e Docker Compose para a infraestrutura do backend
 
-## ⚙️ Como Rodar
+## Como rodar
 
-### Pré-requisitos
-- Docker e Docker Compose
-- Node.js e npm
+### Backend
 
-### Passo a passo
+```bash
+cd backend
+pnpm install
+docker compose up -d
+pnpm start:dev
+```
 
-1. **Instalar dependências:**
-   ```bash
-   npm install
+Por padrao, a API usa a porta definida em `PORT` ou `3000` quando a variavel nao estiver configurada.
 
-2. Defina as variáveis de ambiente (Exemplo):
-    ```bash
-    DB_USERNAME=postgres
-    DB_DATABASE=scala_uvv
-    DB_PASSWORD=postgres
-    DB_PORT=5432
-    DB_HOST=localhost
-    NODE_ENV=development
-    ```
+### Frontend
 
-3. **Subir infraestrutura (DB & Redis):**
-   ```bash
-   docker-compose up -d
-   ```
+```bash
+cd scala-ui
+pnpm install
+pnpm dev
+```
 
-4. **Rodar em modo desenvolvimento:**
-   ```bash
-   npm run start:dev
-   ```
+O frontend roda em `http://localhost:3000` quando a porta estiver livre.
 
-5. **Verificar qualidade do código:**
-   ```bash
-   npm run lint
-   ```
+## Variaveis de ambiente
 
-## 📅 Próximos Passos
+O backend le variaveis via `@nestjs/config`. Para desenvolvimento local, crie um arquivo `.env` dentro de `backend/`:
 
-- [x] Implementação das Entidades de Domínio (Turma, Espaço, Alocação).
-- [ ] Desenvolvimento do motor de detecção de conflitos de horários.
-- [ ] Criação de Seeds para carga inicial de dados acadêmicos.
-- [ ] Fluxo de solicitações de espaços especiais para professores.
+```env
+PORT=3001
+DB_HOST=localhost
+DB_PORT=5432
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=scala_uvv
+REDIS_HOST=localhost
+REDIS_PORT=6379
+NODE_ENV=development
+```
+
+> Se backend e frontend forem executados ao mesmo tempo, use portas diferentes, por exemplo backend em `3001` e frontend em `3000`.
+
+## Validacao
+
+### Backend
+
+```bash
+cd backend
+pnpm lint
+pnpm test
+pnpm build
+```
+
+### Frontend
+
+```bash
+cd scala-ui
+pnpm lint
+pnpm build
+```
+
+## Status atual
+
+- Backend com NestJS, TypeORM, PostgreSQL, Redis e entidades de dominio configuradas.
+- Frontend com tela de login em `/login`, dashboard inicial em `/` e autenticacao mockada no front end.
+- Credenciais mockadas do frontend:
+  - Email: `exemplo@gmail.com`
+  - Senha: `123456`
