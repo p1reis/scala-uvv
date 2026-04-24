@@ -95,7 +95,13 @@ pnpm build
 ## Status atual
 
 - Backend com NestJS, TypeORM, PostgreSQL, Redis e entidades de dominio configuradas.
-- Frontend com tela de login em `/login`, dashboard inicial em `/` e autenticacao mockada no front end.
-- Credenciais mockadas do frontend:
-  - Email: `exemplo@gmail.com`
-  - Senha: `123456`
+- Frontend com tela de login em `/login`, dashboard inicial em `/` e autenticacao integrada ao backend.
+
+## Contas de acesso para teste
+
+O backend cria estes usuarios automaticamente via seeder quando a tabela `usuarios` esta vazia:
+
+| Perfil | Email | Senha |
+| --- | --- | --- |
+| Organizador | `norminda@uvv.br` | `senha123` |
+| Professor | `edgar@uvv.br` | `senha123` |
