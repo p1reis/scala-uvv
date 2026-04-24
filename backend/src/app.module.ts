@@ -3,17 +3,24 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import {
- Usuario, Predio, Espaco, Turma, Agenda, Horario, Solicitacao, Log
-} from './domain/entity/index'
+  Agenda,
+  Espaco,
+  Horario,
+  Log,
+  Predio,
+  Solicitacao,
+  Turma,
+  Usuario,
+} from "./domain/entity/index";
 
-import { AuthModule } from './infrastructure/auth/auth.module';
-import { SeederService } from './infrastructure/database/seeder.service';
-
+import { AuthModule } from "./infrastructure/auth/auth.module";
+import { SeederService } from "./infrastructure/database/seeder.service";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: [".env.local", ".env"],
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
@@ -25,7 +32,16 @@ import { SeederService } from './infrastructure/database/seeder.service';
         password: config.get<string>("DB_PASSWORD"),
         database: config.get<string>("DB_DATABASE"),
         // autoLoadEntities: true,
-        entities: [Usuario, Predio, Espaco, Turma, Agenda, Horario, Solicitacao, Log],
+        entities: [
+          Usuario,
+          Predio,
+          Espaco,
+          Turma,
+          Agenda,
+          Horario,
+          Solicitacao,
+          Log,
+        ],
         synchronize: config.get<string>("NODE_ENV") === "development",
       }),
     }),
