@@ -1,48 +1,56 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
-  ManyToOne,
+  Entity,
   JoinColumn,
-} from 'typeorm';
-import { Horario } from './horario.entity';
-import { Usuario } from './usuario.entity';
-import { Turma } from './turma.entity';
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Horario } from "./horario.entity";
+import { Turma } from "./turma.entity";
+import { Usuario } from "./usuario.entity";
 
 export enum SituacaoSolicitacao {
-  ACEITO = 'aceito',
-  RECUSADO = 'recusado',
+  ACEITO = "aceito",
+  RECUSADO = "recusado",
 }
 
-@Entity('solicitacoes')
+@Entity("solicitacoes")
 export class Solicitacao {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ name: 'horario_id' })
+  @Column({ name: "horario_id" })
   horarioId: string;
 
   @ManyToOne(() => Horario, { nullable: false })
-  @JoinColumn({ name: 'horario_id' })
+  @JoinColumn({ name: "horario_id" })
   horario: Horario;
 
-  @Column({ type: 'text' })
+  @Column({ type: "text" })
   justificativa: string;
 
-  @Column({ type: 'enum', enum: SituacaoSolicitacao })
+  @Column({ type: "enum", enum: SituacaoSolicitacao })
   situacao: SituacaoSolicitacao;
 
-  @Column({ name: 'professor_id' })
+  @Column({ name: "professor_id" })
   professorId: string;
 
-  @ManyToOne(() => Usuario, (usuario) => usuario.solicitacoes, { nullable: false })
-  @JoinColumn({ name: 'professor_id' })
+  @ManyToOne(
+    () => Usuario,
+    (usuario) => usuario.solicitacoes,
+    { nullable: false },
+  )
+  @JoinColumn({ name: "professor_id" })
   professor: Usuario;
 
-  @Column({ name: 'turma_id' })
+  @Column({ name: "turma_id" })
   turmaId: string;
 
-  @ManyToOne(() => Turma, (turma) => turma.solicitacoes, { nullable: false })
-  @JoinColumn({ name: 'turma_id' })
+  @ManyToOne(
+    () => Turma,
+    (turma) => turma.solicitacoes,
+    { nullable: false },
+  )
+  @JoinColumn({ name: "turma_id" })
   turma: Turma;
 }

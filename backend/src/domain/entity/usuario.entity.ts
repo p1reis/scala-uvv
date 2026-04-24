@@ -1,33 +1,31 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-} from 'typeorm';
-import { Solicitacao } from './solicitacao.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Solicitacao } from "./solicitacao.entity";
 
 export enum TipoUsuario {
-  PROFESSOR = 'professor',
-  ORGANIZADOR = 'organizador',
+  PROFESSOR = "professor",
+  ORGANIZADOR = "organizador",
 }
 
-@Entity('usuarios')
+@Entity("usuarios")
 export class Usuario {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
   nome: string;
 
-  @Column({ name: 'senha_hash' })
+  @Column({ name: "senha_hash" })
   senhaHash: string;
 
   @Column({ unique: true })
   email: string;
 
-  @Column({ type: 'enum', enum: TipoUsuario })
+  @Column({ type: "enum", enum: TipoUsuario })
   tipo: TipoUsuario;
 
-  @OneToMany(() => Solicitacao, (solicitacao) => solicitacao.professor)
+  @OneToMany(
+    () => Solicitacao,
+    (solicitacao) => solicitacao.professor,
+  )
   solicitacoes: Solicitacao[];
 }

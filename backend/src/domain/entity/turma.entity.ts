@@ -1,33 +1,31 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-} from 'typeorm';
-import { Solicitacao } from './solicitacao.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Solicitacao } from "./solicitacao.entity";
 
 export enum TurnoTurma {
-  MATUTINO = 'matutino',
-  NOTURNO = 'noturno',
+  MATUTINO = "matutino",
+  NOTURNO = "noturno",
 }
 
-@Entity('turmas')
+@Entity("turmas")
 export class Turma {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
   curso: string;
 
-  @Column({ type: 'varchar', length: 3 })
+  @Column({ type: "varchar", length: 3 })
   codigo: string;
 
-  @Column({ type: 'int' })
+  @Column({ type: "int" })
   semestre: number;
 
-  @Column({ type: 'enum', enum: TurnoTurma })
+  @Column({ type: "enum", enum: TurnoTurma })
   horario: TurnoTurma;
 
-  @OneToMany(() => Solicitacao, (solicitacao) => solicitacao.turma)
+  @OneToMany(
+    () => Solicitacao,
+    (solicitacao) => solicitacao.turma,
+  )
   solicitacoes: Solicitacao[];
 }

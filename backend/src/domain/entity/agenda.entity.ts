@@ -1,27 +1,25 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-} from 'typeorm';
-import { Horario } from './horario.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Horario } from "./horario.entity";
 
 export enum SemestreAgenda {
-  PRIMEIRO = 'primeiro',
-  SEGUNDO = 'segundo',
+  PRIMEIRO = "primeiro",
+  SEGUNDO = "segundo",
 }
 
-@Entity('agendas')
+@Entity("agendas")
 export class Agenda {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: 'enum', enum: SemestreAgenda })
+  @Column({ type: "enum", enum: SemestreAgenda })
   semestre: SemestreAgenda;
 
-  @Column({ type: 'int' })
+  @Column({ type: "int" })
   ano: number;
 
-  @OneToMany(() => Horario, (horario) => horario.agenda)
+  @OneToMany(
+    () => Horario,
+    (horario) => horario.agenda,
+  )
   horarios: Horario[];
 }

@@ -1,13 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('logs')
+@Entity("logs")
 export class Log {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
   operacao: string;
 
-  @Column({ name: 'data_hora', type: 'timestamp' })
+  @Column({ name: "data_hora", type: "timestamp" })
   dataHora: Date;
 }

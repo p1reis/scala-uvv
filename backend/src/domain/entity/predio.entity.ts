@@ -1,19 +1,17 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-} from 'typeorm';
-import { Espaco } from './espaco.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Espaco } from "./espaco.entity";
 
-@Entity('predios')
+@Entity("predios")
 export class Predio {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
   nome: string;
 
-  @OneToMany(() => Espaco, (espaco) => espaco.predio)
+  @OneToMany(
+    () => Espaco,
+    (espaco) => espaco.predio,
+  )
   espacos: Espaco[];
 }

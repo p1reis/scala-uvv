@@ -1,8 +1,19 @@
 {
+  "files": {
+    "ignore": ["dist", "node_modules"]
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "useImportType": "off"
+      }
     }
   },
   "formatter": {
