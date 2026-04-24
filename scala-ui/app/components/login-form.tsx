@@ -1,36 +1,22 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState, useState } from "react";
 import { EyeOff } from "./icons";
+import { loginAction } from "../login/actions";
 
 const inputClassName =
   "h-12 w-full rounded-md border border-neutral-200 bg-white px-3 text-sm text-neutral-900 shadow-[0_1px_8px_rgba(18,18,18,0.04)] outline-none transition placeholder:text-neutral-500 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10";
 
 export function LoginForm() {
-  const router = useRouter();
-  const [error, setError] = useState("");
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const formData = new FormData(event.currentTarget);
-    const email = String(formData.get("email"));
-    const password = String(formData.get("password"));
-
-    if (email === "exemplo@gmail.com" && password === "123456") {
-      localStorage.setItem("scala:isAuthenticated", "true");
-      router.push("/");
-      return;
-    }
-
-    setError("E-mail ou senha inválidos.");
-  }
+  const [state, formAction, isPending] = useActionState(loginAction, {
+    error: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <form
       className="mt-11 w-full"
-      onSubmit={handleSubmit}
+      action={formAction}
       aria-label="Login institucional"
     >
       <div className="space-y-6">
@@ -41,7 +27,7 @@ export function LoginForm() {
             type="email"
             name="email"
             autoComplete="email"
-            placeholder="exemplo@gmail.com"
+            placeholder="nome@uvv.br"
             required
           />
         </label>
@@ -53,16 +39,18 @@ export function LoginForm() {
           <span className="relative mt-2 block">
             <input
               className={`${inputClassName} pr-11`}
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               autoComplete="current-password"
-              placeholder="123456"
+              placeholder="Digite sua senha"
               required
             />
             <button
               className="absolute right-3 top-1/2 grid size-7 -translate-y-1/2 place-items-center rounded text-neutral-400 transition hover:text-neutral-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
               type="button"
-              aria-label="Mostrar senha"
+              aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              aria-pressed={showPassword}
+              onClick={() => setShowPassword((current) => !current)}
             >
               <EyeOff className="size-5" />
             </button>
@@ -70,9 +58,9 @@ export function LoginForm() {
         </label>
       </div>
 
-      {error ? (
+      {state.error ? (
         <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm font-medium text-red-700">
-          {error}
+          {state.error}
         </p>
       ) : null}
 
@@ -95,10 +83,11 @@ export function LoginForm() {
       </div>
 
       <button
-        className="mt-7 h-12 w-full rounded-md bg-indigo-600 px-4 text-sm font-medium text-white shadow-[0_12px_22px_rgba(67,56,202,0.22)] transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/30"
+        className="mt-7 h-12 w-full rounded-md bg-indigo-600 px-4 text-sm font-medium text-white shadow-[0_12px_22px_rgba(67,56,202,0.22)] transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 disabled:cursor-not-allowed disabled:bg-indigo-400"
         type="submit"
+        disabled={isPending}
       >
-        Entrar
+        {isPending ? "Entrando..." : "Entrar"}
       </button>
     </form>
   );

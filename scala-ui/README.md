@@ -63,11 +63,19 @@ pnpm install
 
 ## Desenvolvimento
 
+Com o backend rodando em `http://localhost:3001`, inicie o frontend:
+
 ```bash
 pnpm dev
 ```
 
 Abra `http://localhost:3000`.
+
+Se precisar apontar para outra URL de backend, defina:
+
+```bash
+SCALA_API_URL=http://localhost:3001
+```
 
 ## Build
 
@@ -92,4 +100,4 @@ pnpm lint
 ## Observacoes
 
 - A protecao atual acontece somente no front end e nao deve ser usada como seguranca real em producao.
-- Quando o backend de autenticacao estiver pronto, substitua o mock do `localStorage` por chamadas a API e uma estrategia de sessao adequada.
+- O login usa o endpoint `/auth/login` do backend. Por padrao, a API local esperada e `http://localhost:3001`.

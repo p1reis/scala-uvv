@@ -1,8 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useSyncExternalStore } from "react";
+import { logoutAction } from "../actions";
+import type { SessionUser } from "../lib/session";
 
 const navigationItems = [
   "Inicio",
@@ -13,45 +11,11 @@ const navigationItems = [
   "Configuracoes",
 ];
 
-function subscribeToAuthChanges(callback: () => void) {
-  window.addEventListener("storage", callback);
+type DashboardHomeProps = {
+  user: SessionUser;
+};
 
-  return () => {
-    window.removeEventListener("storage", callback);
-  };
-}
-
-function readAuthSnapshot() {
-  return localStorage.getItem("scala:isAuthenticated") === "true";
-}
-
-export function DashboardHome() {
-  const router = useRouter();
-  const isAuthenticated = useSyncExternalStore(
-    subscribeToAuthChanges,
-    readAuthSnapshot,
-    () => false,
-  );
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router]);
-
-  function handleLogout() {
-    localStorage.removeItem("scala:isAuthenticated");
-    router.replace("/login");
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <main className="grid min-h-dvh place-items-center bg-neutral-50 text-sm font-medium text-neutral-500">
-        Verificando acesso...
-      </main>
-    );
-  }
-
+export function DashboardHome({ user }: DashboardHomeProps) {
   return (
     <main className="flex min-h-dvh bg-neutral-50 text-neutral-950">
       <aside className="hidden w-72 shrink-0 border-r border-neutral-200 bg-white px-5 py-6 lg:flex lg:flex-col">
@@ -91,13 +55,14 @@ export function DashboardHome() {
           ))}
         </nav>
 
-        <button
-          className="mt-auto h-11 rounded-md border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-950"
-          type="button"
-          onClick={handleLogout}
-        >
-          Sair
-        </button>
+        <form action={logoutAction} className="mt-auto">
+          <button
+            className="h-11 w-full rounded-md border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-950"
+            type="submit"
+          >
+            Sair
+          </button>
+        </form>
       </aside>
 
       <section className="flex min-w-0 flex-1 flex-col">
@@ -111,27 +76,23 @@ export function DashboardHome() {
             </h1>
           </div>
 
-          <button
-            className="h-10 rounded-md border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-950 lg:hidden"
-            type="button"
-            onClick={handleLogout}
-          >
-            Sair
-          </button>
+          <form action={logoutAction} className="lg:hidden">
+            <button
+              className="h-10 rounded-md border border-neutral-200 px-3 text-sm font-medium text-neutral-600 transition hover:bg-neutral-50 hover:text-neutral-950"
+              type="submit"
+            >
+              Sair
+            </button>
+          </form>
         </header>
 
         <div className="px-5 py-6 sm:px-8 lg:px-10">
           <div className="rounded-lg border border-neutral-200 bg-white p-6 shadow-[0_1px_10px_rgba(15,23,42,0.04)]">
-            <p className="text-sm font-medium text-indigo-700">
-              Acesso autorizado
-            </p>
             <h2 className="mt-3 max-w-2xl text-2xl font-semibold tracking-tight text-neutral-950">
-              Bem-vindo a sua futura plataforma de gestao e reservas de salas.
+              Bem-vindo, {user.nome ?? user.email}.
             </h2>
             <p className="mt-3 max-w-3xl text-sm leading-6 text-neutral-500">
-              Esta tela inicial e um ponto de partida para o dashboard. A
-              protecao atual acontece apenas no front end usando localStorage,
-              como mock temporario.
+              Seu acesso é de {user.tipo}
             </p>
           </div>
 

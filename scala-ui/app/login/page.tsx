@@ -1,8 +1,16 @@
 import { LoginForm } from "../components/login-form";
 import { LoginHero } from "../components/login-hero";
 import { LogoLockup } from "../components/logo-lockup";
+import { redirect } from "next/navigation";
+import { getSession } from "../lib/session";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await getSession();
+
+  if (session) {
+    redirect("/");
+  }
+
   return (
     <main className="grid min-h-dvh bg-white lg:grid-cols-2">
       <section className="flex min-h-dvh items-center justify-center px-6 py-10 sm:px-10 lg:px-14">

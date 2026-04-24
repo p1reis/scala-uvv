@@ -1,5 +1,13 @@
 import { DashboardHome } from "./components/dashboard-home";
+import { redirect } from "next/navigation";
+import { getSession } from "./lib/session";
 
-export default function HomePage() {
-  return <DashboardHome />;
+export default async function HomePage() {
+  const session = await getSession();
+
+  if (!session) {
+    redirect("/login");
+  }
+
+  return <DashboardHome user={session.user} />;
 }
