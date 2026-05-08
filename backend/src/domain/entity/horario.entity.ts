@@ -9,6 +9,7 @@ import {
 import { Agenda } from "./agenda.entity";
 import { Espaco } from "./espaco.entity";
 import { Solicitacao } from "./solicitacao.entity";
+import { Turma } from "./turma.entity";
 
 @Entity("horarios")
 export class Horario {
@@ -34,6 +35,13 @@ export class Horario {
 
   @Column({ name: "agenda_id" })
   agendaId: string;
+
+  @Column({ name: "turma_id", nullable: true })
+  turmaId: string | null;
+
+  @ManyToOne(() => Turma, { nullable: true })
+  @JoinColumn({ name: "turma_id" })
+  turma: Turma | null;
 
   @ManyToOne(
     () => Agenda,

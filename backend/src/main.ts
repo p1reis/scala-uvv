@@ -24,14 +24,14 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  console.log(`🚀 Application is running on: http://localhost:${port}`);
+  console.log(`Application is running on: http://localhost:${port}`);
 
   const swaggerApp = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
     .setTitle('Scala UVV - API')
     .setDescription('Serviço de agendamento de espaços UVV')
-    .setVersion('0.0.1')
+    .setVersion('1.0.0')
     .addBearerAuth()
     .build();
     
@@ -41,6 +41,6 @@ async function bootstrap() {
   const swaggerPort = configService.get<number>("SWAGGER_PORT") || 4000;
 
   await swaggerApp.listen(swaggerPort);
-  console.log(`📚 Swagger http://localhost:${swaggerPort}`);
+  console.log(`Swagger http://localhost:${swaggerPort}`);
 }
 bootstrap();

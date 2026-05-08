@@ -1,0 +1,15 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Predio } from '../../domain/entity/predio.entity';
+import { Espaco } from '../../domain/entity/espaco.entity';
+import { EspacosService } from '../../application/espacos/espacos.service';
+import { EspacosController } from './controllers/espacos.controller';
+
+@Module({
+  
+  imports: [TypeOrmModule.forFeature([Predio, Espaco])],
+  controllers: [EspacosController],
+  providers: [EspacosService],
+  exports: [EspacosService], 
+})
+export class EspacosModule {}
