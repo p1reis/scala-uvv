@@ -14,7 +14,7 @@ export default async function LoginPage() {
   return (
     <main className="grid min-h-dvh bg-white lg:grid-cols-2">
       <section className="flex min-h-dvh items-center justify-center px-6 py-10 sm:px-10 lg:px-14">
-        <div className="flex w-full max-w-[430px] flex-col items-center">
+        <div className="flex w-full max-w-107.5 flex-col items-center">
           <div className="mt-20 w-full sm:mt-24">
             <div className="text-center">
               <h1 className="text-[32px] font-bold leading-tight text-neutral-950 sm:text-[36px]">
