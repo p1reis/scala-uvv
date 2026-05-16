@@ -10,6 +10,7 @@ import { Turma } from "./turma.entity";
 import { Usuario } from "./usuario.entity";
 
 export enum SituacaoSolicitacao {
+  PENDENTE = "pendente",
   ACEITO = "aceito",
   RECUSADO = "recusado",
 }

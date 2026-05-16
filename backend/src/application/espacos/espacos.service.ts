@@ -1,16 +1,25 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Predio } from '../../domain/entity/predio.entity';
-import { Espaco } from '../../domain/entity/espaco.entity';
-import { CriarPredio, CriarEspaco, AtualizarEspaco, AtualizarPredio } from '../espacos/dto/espacos-dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Espaco } from "../../domain/entity/espaco.entity";
+import { Predio } from "../../domain/entity/predio.entity";
+import {
+  AtualizarEspaco,
+  AtualizarPredio,
+  CriarEspaco,
+  CriarPredio,
+} from "../espacos/dto/espacos-dto";
 
 @Injectable()
 export class EspacosService {
   constructor(
     @InjectRepository(Predio)
     private readonly predioRepository: Repository<Predio>,
-    
+
     @InjectRepository(Espaco)
     private readonly espacoRepository: Repository<Espaco>,
   ) {}
@@ -21,38 +30,38 @@ export class EspacosService {
   }
 
   async listarPredios(): Promise<Predio[]> {
-    return await this.predioRepository.find({ relations: ['espacos'] });
+    return await this.predioRepository.find({ relations: ["espacos"] });
   }
 
   async criarEspaco(dados: CriarEspaco): Promise<Espaco> {
-    
     const predioExiste = await this.predioRepository.findOne({
       where: { id: dados.predioId },
     });
 
     if (!predioExiste) {
-      throw new NotFoundException('O prédio informado não foi encontrado no sistema.');
+      throw new NotFoundException(
+        "O prédio informado não foi encontrado no sistema.",
+      );
     }
 
     const novoEspaco = this.espacoRepository.create({
       nome: dados.nome,
       capacidade: dados.capacidade,
       tipo: dados.tipo,
-      predio: predioExiste, 
+      predio: predioExiste,
     });
 
     return await this.espacoRepository.save(novoEspaco);
   }
 
   async listarEspacos(): Promise<Espaco[]> {
-    
-    return await this.espacoRepository.find({ relations: ['predio'] });
+    return await this.espacoRepository.find({ relations: ["predio"] });
   }
 
   async atualizarPredio(id: string, dados: AtualizarPredio): Promise<Predio> {
     const predio = await this.predioRepository.findOneBy({ id });
-    if (!predio) throw new NotFoundException('Prédio não encontrado.');
-    
+    if (!predio) throw new NotFoundException("Prédio não encontrado.");
+
     Object.assign(predio, dados);
     return await this.predioRepository.save(predio);
   }
@@ -60,14 +69,15 @@ export class EspacosService {
   async removerPredio(id: string): Promise<void> {
     const predio = await this.predioRepository.findOne({
       where: { id },
-      relations: ['espacos'],
+      relations: ["espacos"],
     });
 
-    if (!predio) throw new NotFoundException('Prédio não encontrado.');
-    
-    
+    if (!predio) throw new NotFoundException("Prédio não encontrado.");
+
     if (predio.espacos.length > 0) {
-      throw new BadRequestException('Não é possível remover um prédio que possui salas cadastradas.');
+      throw new BadRequestException(
+        "Não é possível remover um prédio que possui salas cadastradas.",
+      );
     }
 
     await this.predioRepository.remove(predio);
@@ -75,7 +85,7 @@ export class EspacosService {
 
   async atualizarEspaco(id: string, dados: AtualizarEspaco): Promise<Espaco> {
     const espaco = await this.espacoRepository.findOneBy({ id });
-    if (!espaco) throw new NotFoundException('Espaço não encontrado.');
+    if (!espaco) throw new NotFoundException("Espaço não encontrado.");
 
     Object.assign(espaco, dados);
     return await this.espacoRepository.save(espaco);
@@ -83,10 +93,9 @@ export class EspacosService {
 
   async removerEspaco(id: string): Promise<void> {
     const espaco = await this.espacoRepository.findOneBy({ id });
-    if (!espaco) throw new NotFoundException('Espaço não encontrado.');
-    
+    if (!espaco) throw new NotFoundException("Espaço não encontrado.");
+
     // Futuramente, aqui validaremos se existem horários agendados antes de apagar
     await this.espacoRepository.remove(espaco);
   }
-
 }

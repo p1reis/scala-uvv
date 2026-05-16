@@ -13,9 +13,11 @@ import {
   Usuario,
 } from "./domain/entity/index";
 
+import { AgendaModule } from "./infrastructure/agenda/agenda.module";
 import { AuthModule } from "./infrastructure/auth/auth.module";
 import { EspacosModule } from "./infrastructure/espacos/espacos.module";
-import { AgendaModule } from './infrastructure/agenda/agenda.module';
+import { SolicitacoesModule } from "./infrastructure/solicitacoes/solicitacoes.module";
+import { TurmasModule } from "./infrastructure/turmas/turmas.module";
 
 @Module({
   imports: [
@@ -57,7 +59,9 @@ import { AgendaModule } from './infrastructure/agenda/agenda.module';
     AuthModule,
     EspacosModule,
     AgendaModule,
-    TypeOrmModule.forFeature([Usuario]), 
+    SolicitacoesModule,
+    TurmasModule,
+    TypeOrmModule.forFeature([Usuario]),
   ],
 })
 export class AppModule {}
