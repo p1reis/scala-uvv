@@ -13,8 +13,11 @@ import {
   Usuario,
 } from "./domain/entity/index";
 
+import { AgendaModule } from "./infrastructure/agenda/agenda.module";
 import { AuthModule } from "./infrastructure/auth/auth.module";
-import { SeederService } from "./infrastructure/database/seeder.service";
+import { EspacosModule } from "./infrastructure/espacos/espacos.module";
+import { SolicitacoesModule } from "./infrastructure/solicitacoes/solicitacoes.module";
+import { TurmasModule } from "./infrastructure/turmas/turmas.module";
 
 @Module({
   imports: [
@@ -31,7 +34,6 @@ import { SeederService } from "./infrastructure/database/seeder.service";
         username: config.get<string>("DB_USERNAME"),
         password: config.get<string>("DB_PASSWORD"),
         database: config.get<string>("DB_DATABASE"),
-        // autoLoadEntities: true,
         entities: [
           Usuario,
           Predio,
@@ -55,8 +57,11 @@ import { SeederService } from "./infrastructure/database/seeder.service";
       }),
     }),
     AuthModule,
+    EspacosModule,
+    AgendaModule,
+    SolicitacoesModule,
+    TurmasModule,
     TypeOrmModule.forFeature([Usuario]),
   ],
-  providers: [SeederService],
 })
 export class AppModule {}
